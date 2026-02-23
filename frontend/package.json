@@ -1,5 +1,6 @@
 {
   "name": "market-insights-ai",
+  "homepage": "https://nandyalakavya.github.io/Stock-Market-Analysis-and-Forcasting-using-LSTM",
   "private": true,
   "proxy": "http://127.0.0.1:5000",
   "dependencies": {
@@ -8,10 +9,12 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1"
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test"
   },
   "browserslist": {
     "production": [
