@@ -6,22 +6,22 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-if __name__ == "__main__":
-    app.run(
-        host="0.0.0.0",
-        port=int(os.environ.get("PORT", 5000))
-    )
-    
+# -----------------------
+# Data directory setup
+# -----------------------
 DATA_DIR = "data"
 os.makedirs(DATA_DIR, exist_ok=True)
 
+# -----------------------
+# Routes
+# -----------------------
 
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({"status": "Backend running"})
 
 
-@app.route("/files")
+@app.route("/files", methods=["GET"])
 def files():
     return jsonify(os.listdir(DATA_DIR))
 
@@ -38,7 +38,7 @@ def upload():
     return jsonify({"message": "File uploaded successfully"})
 
 
-@app.route("/predict")
+@app.route("/predict", methods=["GET"])
 def run_prediction():
     try:
         file = request.args.get("file")
@@ -52,14 +52,13 @@ def run_prediction():
             return jsonify({"error": "File not found"}), 400
 
         days_map = {
-            "6m": 180,
-            "1y": 365,
-            "2y": 730,
-            "3y": 1095,
-            "5y": 1825
+            "6m": 60,
+            "1y": 120,
         }
 
+        print("🔮 Running prediction for", file_path, "days:", days_map[horizon])
         result = predict(file_path, days_map[horizon])
+        print("✅ Prediction completed")
         return jsonify(result)
 
     except Exception as e:
@@ -67,8 +66,11 @@ def run_prediction():
         return jsonify({"error": str(e)}), 500
 
 
+# -----------------------
+# App entry point (Render)
+# -----------------------
 if __name__ == "__main__":
-   app.run(
+    app.run(
         host="0.0.0.0",
         port=int(os.environ.get("PORT", 10000))
     )
