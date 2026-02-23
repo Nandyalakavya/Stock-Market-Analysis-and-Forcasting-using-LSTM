@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  background: linear-gradient(135deg, #020617, #020617);
+  color: #e5e7eb;
+}
+
+.container {
+  padding: 24px;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+}
+
+.panel {
+  background: linear-gradient(180deg, #020617, #020617);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+.chart-panel {
+  background: linear-gradient(180deg, #020617, #020617);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+button {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #8b5cf6;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+}
+
+.metrics {
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+}

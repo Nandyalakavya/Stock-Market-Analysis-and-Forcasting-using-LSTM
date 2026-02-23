@@ -1,0 +1,14 @@
+# Node.js
+node_modules/
+frontend/node_modules/
+
+# Python
+venv/
+backend-lstm/venv/
+
+# Caches
+__pycache__/
+*.pyc
+
+# Env files
+.env
