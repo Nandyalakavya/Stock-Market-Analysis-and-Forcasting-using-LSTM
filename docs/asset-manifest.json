@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Stock-Market-Analysis-and-Forcasting-using-LSTM/static/css/main.68572d11.css",
-    "main.js": "/Stock-Market-Analysis-and-Forcasting-using-LSTM/static/js/main.d91848c6.js",
+    "main.js": "/Stock-Market-Analysis-and-Forcasting-using-LSTM/static/js/main.f55c8938.js",
     "index.html": "/Stock-Market-Analysis-and-Forcasting-using-LSTM/index.html",
     "main.68572d11.css.map": "/Stock-Market-Analysis-and-Forcasting-using-LSTM/static/css/main.68572d11.css.map",
-    "main.d91848c6.js.map": "/Stock-Market-Analysis-and-Forcasting-using-LSTM/static/js/main.d91848c6.js.map"
+    "main.f55c8938.js.map": "/Stock-Market-Analysis-and-Forcasting-using-LSTM/static/js/main.f55c8938.js.map"
   },
   "entrypoints": [
     "static/css/main.68572d11.css",
-    "static/js/main.d91848c6.js"
+    "static/js/main.f55c8938.js"
   ]
 }
