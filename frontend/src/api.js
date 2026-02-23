@@ -2,6 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "https://lstm-backend-3iht.onrender.com",
+  timeout: 120000,
   headers: {
     "Content-Type": "application/json"
   }
