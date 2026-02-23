@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://stock-market-analysis-and-forcasting.onrender.com",
+  baseURL: "URL https://lstm-backend-3iht.onrender.com",
   headers: {
     "Content-Type": "application/json"
   }
