@@ -16,7 +16,7 @@ DATA_DIR = "data"
 os.makedirs(DATA_DIR, exist_ok=True)
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def home():
     return jsonify({"status": "Backend running"})
 
@@ -68,4 +68,7 @@ def run_prediction():
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+   app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 10000))
+    )
