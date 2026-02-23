@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from lstm_model import predict
 import os
+import pandas as pd
+import traceback
 
 app = Flask(__name__)
 CORS(app)
@@ -49,21 +51,38 @@ def run_prediction():
 
         file_path = os.path.join(DATA_DIR, file)
         if not os.path.exists(file_path):
-            return jsonify({"error": "File not found"}), 400
+            return jsonify({"error": f"File not found: {file_path}"}), 400
 
+        # 🔴 SAFE limits for Render Free tier
         days_map = {
-            "6m": 60,
-            "1y": 120,
+            "6m": 30,
+            "1y": 60
         }
 
-        print("🔮 Running prediction for", file_path, "days:", days_map[horizon])
-        result = predict(file_path, days_map[horizon])
+        days = days_map.get(horizon, 30)
+
+        print("📄 File:", file_path)
+        print("📅 Horizon days:", days)
+
+        # 🔴 Reduce CSV size to avoid MemoryError
+        df = pd.read_csv(file_path)
+        df = df.tail(500)          # LIMIT rows (CRITICAL FIX)
+        temp_path = os.path.join(DATA_DIR, "temp.csv")
+        df.to_csv(temp_path, index=False)
+
+        print("🚀 Starting LSTM prediction...")
+        result = predict(temp_path, days)
         print("✅ Prediction completed")
+
         return jsonify(result)
 
     except Exception as e:
-        print("❌ Error:", e)
-        return jsonify({"error": str(e)}), 500
+        print("❌ Prediction crashed")
+        traceback.print_exc()
+        return jsonify({
+            "error": "Prediction failed",
+            "details": str(e)
+        }), 500
 
 
 # -----------------------
