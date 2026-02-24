@@ -26,22 +26,16 @@ def build_model():
 
 
 def predict(csv_path, horizon_days):    
-    if os.environ.get("RENDER"):
-        sample = [100 + i*0.5 for i in range(30)]
-        return {
-            "dates": list(range(len(sample))),
-            "historical": sample,
-            "predicted": [x + 2 for x in sample],
-            "metrics": {
-                "rmse": 1.2,
-                "mae": 0.9,
-                "r2": 0.85,
-                "profit_loss": 2.1
-        }
- }
     print("📊 Reading CSV:", csv_path)
     df = pd.read_csv(csv_path)
     df.columns = df.columns.str.strip()
+
+    # 🔴 LIMIT DATA FOR CLOUD (LAST 2–3 YEARS)
+    df["Date"] = pd.to_datetime(df["Date"])
+    df = df.sort_values("Date")
+
+    # Keep last ~500 trading days (~2 years)
+    df = df.tail(500)
 
     date_col = None
     close_col = None
