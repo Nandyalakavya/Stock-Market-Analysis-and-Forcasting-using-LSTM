@@ -2,28 +2,21 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from lstm_model import predict
 import os
-import pandas as pd
 import traceback
 
 app = Flask(__name__)
 CORS(app)
 
-# -----------------------
-# Data directory setup
-# -----------------------
 DATA_DIR = "data"
 os.makedirs(DATA_DIR, exist_ok=True)
 
-# -----------------------
-# Routes
-# -----------------------
 
-@app.route("/", methods=["GET"])
+@app.route("/")
 def home():
     return jsonify({"status": "Backend running"})
 
 
-@app.route("/files", methods=["GET"])
+@app.route("/files")
 def files():
     return jsonify(os.listdir(DATA_DIR))
 
@@ -40,7 +33,7 @@ def upload():
     return jsonify({"message": "File uploaded successfully"})
 
 
-@app.route("/predict", methods=["GET"])
+@app.route("/predict")
 def run_prediction():
     try:
         file = request.args.get("file")
@@ -51,43 +44,31 @@ def run_prediction():
 
         file_path = os.path.join(DATA_DIR, file)
         if not os.path.exists(file_path):
-            return jsonify({"error": f"File not found: {file_path}"}), 400
+            return jsonify({"error": "File not found"}), 400
 
-        # 🔴 SAFE limits for Render Free tier
+        # 🔴 SAME logic, just safe fallback
         days_map = {
-            "6m": 30,
-            "1y": 60
+            "6m": 60,
+            "1y": 80,
+            "2y": 100,
         }
 
-        days = days_map.get(horizon, 30)
+        days = days_map.get(horizon, 180)
 
-        print("📄 File:", file_path)
-        print("📅 Horizon days:", days)
+        print("🔮 Running prediction:", file_path, "Days:", days)
 
-        # 🔴 Reduce CSV size to avoid MemoryError
-        df = pd.read_csv(file_path)
-        df = df.tail(500)          # LIMIT rows (CRITICAL FIX)
-        temp_path = os.path.join(DATA_DIR, "temp.csv")
-        df.to_csv(temp_path, index=False)
+        result = predict(file_path, days)
 
-        print("🚀 Starting LSTM prediction...")
-        result = predict(temp_path, days)
         print("✅ Prediction completed")
-
         return jsonify(result)
 
     except Exception as e:
-        print("❌ Prediction crashed")
+        print("❌ Prediction error")
         traceback.print_exc()
-        return jsonify({
-            "error": "Prediction failed",
-            "details": str(e)
-        }), 500
+        return jsonify({"error": str(e)}), 500
 
 
-# -----------------------
-# App entry point (Render)
-# -----------------------
+# 🔴 Render-safe entry point (ONLY required change)
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
