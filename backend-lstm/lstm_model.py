@@ -25,9 +25,7 @@ def build_model():
     return model
 
 
-def predict(csv_path, horizon_days):
-    print("📊 Reading CSV:", csv_path)
-    df = df.tail(300) 
+def predict(csv_path, horizon_days):    
     if os.environ.get("RENDER"):
         return {
             "message": "Prediction generated",
@@ -35,6 +33,7 @@ def predict(csv_path, horizon_days):
             "days": horizon_days,
             "predicted_prices": []
         }
+    print("📊 Reading CSV:", csv_path)
     df = pd.read_csv(csv_path)
     df.columns = df.columns.str.strip()
 
