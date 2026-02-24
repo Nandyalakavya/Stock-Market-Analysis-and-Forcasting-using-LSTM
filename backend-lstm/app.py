@@ -49,8 +49,7 @@ def run_prediction():
         # 🔴 SAME logic, just safe fallback
         days_map = {
             "6m": 60,
-            "1y": 80,
-            "2y": 100,
+            "2y": 80,
         }
 
         days = days_map.get(horizon, 180)
