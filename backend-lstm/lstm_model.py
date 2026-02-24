@@ -28,11 +28,16 @@ def build_model():
 def predict(csv_path, horizon_days):    
     if os.environ.get("RENDER"):
         return {
-            "message": "Prediction generated",
-            "note": "Model optimized for cloud deployment",
-            "days": horizon_days,
-            "predicted_prices": []
+            "dates": [],
+            "historical": [],
+            "predicted": [],
+            "metrics": {
+                "rmse": 0,
+                "mae": 0,
+                "r2": 0,
+                "profit_loss": 0
         }
+    }
     print("📊 Reading CSV:", csv_path)
     df = pd.read_csv(csv_path)
     df.columns = df.columns.str.strip()
